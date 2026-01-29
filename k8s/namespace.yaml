@@ -1,0 +1,21 @@
+# =============================================================================
+# AI LITERACY CTF - KUBERNETES NAMESPACE
+# =============================================================================
+#
+# Creates a dedicated namespace for the CTF application.
+# Namespaces help organize resources and apply policies.
+#
+# APPLY WITH:
+#   kubectl apply -f namespace.yaml
+#
+# =============================================================================
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ai-literacy-ctf
+  labels:
+    name: ai-literacy-ctf
+    environment: production
+    # Label for Wiz namespace-level policies
+    wiz.io/environment: production

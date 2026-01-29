@@ -1,0 +1,88 @@
+# =============================================================================
+# AI LITERACY CTF - KUBERNETES SERVICE
+# =============================================================================
+#
+# This manifest exposes the CTF application within the cluster.
+#
+# SERVICE TYPES:
+# - ClusterIP (default): Internal access only, use with Ingress
+# - NodePort: Exposes on each node's IP at a static port
+# - LoadBalancer: Creates external load balancer (AWS ELB/ALB)
+#
+# APPLY WITH:
+#   kubectl apply -f service.yaml
+#
+# =============================================================================
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-literacy-ctf
+  labels:
+    app: ai-literacy-ctf
+spec:
+  # Use LoadBalancer for direct external access on AWS
+  # This will create an AWS ELB/NLB automatically
+  type: LoadBalancer
+
+  # Alternative: Use ClusterIP with Ingress for more control
+  # type: ClusterIP
+
+  selector:
+    app: ai-literacy-ctf
+
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP
+
+---
+# =============================================================================
+# OPTIONAL: INGRESS FOR CUSTOM DOMAIN
+# =============================================================================
+#
+# Use this if you want a custom domain name instead of LoadBalancer IP.
+# Requires an Ingress Controller (e.g., AWS ALB Ingress Controller, nginx-ingress)
+#
+# PREREQUISITES:
+# - Install AWS Load Balancer Controller or nginx-ingress
+# - Configure DNS to point to the Ingress
+#
+# =============================================================================
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ai-literacy-ctf
+  labels:
+    app: ai-literacy-ctf
+  annotations:
+    # For AWS ALB Ingress Controller
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+
+    # For nginx-ingress (uncomment if using nginx)
+    # kubernetes.io/ingress.class: nginx
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+
+spec:
+  rules:
+    # Replace with your domain name
+    - host: ctf.yourdomain.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ai-literacy-ctf
+                port:
+                  name: http
+
+  # Optional: TLS configuration for HTTPS
+  # tls:
+  #   - hosts:
+  #       - ctf.yourdomain.com
+  #     secretName: ctf-tls-secret

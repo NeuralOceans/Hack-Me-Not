@@ -1,132 +1,148 @@
-<!--
-  =============================================================================
-  AI LITERACY CTF - HTML STRUCTURE
-  =============================================================================
-
-  This file contains the HTML structure for the terminal-style chat interface.
-  The design mimics an old CRT computer monitor with a chat window inside.
-
-  HOW THIS PROJECT WORKS:
-  -----------------------
-  1. HTML (this file) - Defines the structure and layout of elements
-  2. CSS (styles.css) - Handles all visual styling and effects
-  3. JavaScript (script.js) - Contains the chatbot logic and game mechanics
-
-  KEY COMPONENTS IN THIS FILE:
-  ----------------------------
-  1. Monitor frame - Creates the physical computer monitor appearance
-  2. Screen - The display area where CRT effects are applied via CSS
-  3. Terminal header - Window title bar with colored control buttons
-  4. Progress section - Shows challenge completion status
-  5. Chat container - Scrollable area where messages appear
-  6. Input area - Text field and button for user interaction
--->
-
-<!--
-  MAIN MONITOR CONTAINER
-  This wrapper creates the outer shell of the retro computer monitor.
-  The gray gradient background and rounded corners are styled in CSS.
--->
-<div class="monitor">
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <!--
-      MONITOR FRAME
-      This inner wrapper adds depth to make it look like a real monitor bezel.
-      The inset box-shadow in CSS creates the recessed screen effect.
+      =============================================================================
+      AI LITERACY CTF - HTML STRUCTURE
+      =============================================================================
+
+      This file contains the HTML structure for the terminal-style chat interface.
+      The design mimics an old CRT computer monitor with a chat window inside.
+
+      HOW THIS PROJECT WORKS:
+      -----------------------
+      1. HTML (this file) - Defines the structure and layout of elements
+      2. CSS (styles.css) - Handles all visual styling and effects
+      3. JavaScript (script.js) - Contains the chatbot logic and game mechanics
+
+      KEY COMPONENTS IN THIS FILE:
+      ----------------------------
+      1. Monitor frame - Creates the physical computer monitor appearance
+      2. Screen - The display area where CRT effects are applied via CSS
+      3. Terminal header - Window title bar with colored control buttons
+      4. Progress section - Shows challenge completion status
+      5. Chat container - Scrollable area where messages appear
+      6. Input area - Text field and button for user interaction
     -->
-    <div class="monitor-frame">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Literacy CTF - Prompt Injection Challenge</title>
+    <meta name="description" content="Learn about AI security through an interactive prompt injection CTF challenge">
+
+    <!-- Link to external stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!--
+      MAIN MONITOR CONTAINER
+      This wrapper creates the outer shell of the retro computer monitor.
+      The gray gradient background and rounded corners are styled in CSS.
+    -->
+    <div class="monitor">
 
         <!--
-          SCREEN ELEMENT
-          This is the main display area. CSS pseudo-elements (::before and ::after)
-          add the scanline effect and green glow that make it look like a CRT.
-          - ::before creates horizontal scanlines
-          - ::after creates a subtle green radial glow
+          MONITOR FRAME
+          This inner wrapper adds depth to make it look like a real monitor bezel.
+          The inset box-shadow in CSS creates the recessed screen effect.
         -->
-        <div class="screen">
+        <div class="monitor-frame">
 
             <!--
-              TERMINAL HEADER
-              Mimics a desktop window title bar. The three colored circles
-              are styled to look like macOS window controls:
-              - Red: Close button
-              - Yellow: Minimize button
-              - Green: Maximize button
-              These are purely decorative and don't have click functionality.
+              SCREEN ELEMENT
+              This is the main display area. CSS pseudo-elements (::before and ::after)
+              add the scanline effect and green glow that make it look like a CRT.
+              - ::before creates horizontal scanlines
+              - ::after creates a subtle green radial glow
             -->
-            <div class="terminal-header">
-                <div class="terminal-btn btn-red"></div>
-                <div class="terminal-btn btn-yellow"></div>
-                <div class="terminal-btn btn-green"></div>
-                <span class="terminal-title">SecureBot v3.1.4 - AI Literacy Training Terminal</span>
+            <div class="screen">
+
+                <!--
+                  TERMINAL HEADER
+                  Mimics a desktop window title bar. The three colored circles
+                  are styled to look like macOS window controls:
+                  - Red: Close button
+                  - Yellow: Minimize button
+                  - Green: Maximize button
+                  These are purely decorative and don't have click functionality.
+                -->
+                <div class="terminal-header">
+                    <div class="terminal-btn btn-red"></div>
+                    <div class="terminal-btn btn-yellow"></div>
+                    <div class="terminal-btn btn-green"></div>
+                    <span class="terminal-title">SecureBot v3.1.4 - AI Literacy Training Terminal</span>
+                </div>
+
+                <!--
+                  PROGRESS TRACKING SECTION
+                  Shows the student's progress through the CTF challenge.
+
+                  How it works:
+                  - #level-text: Updated by JavaScript when credentials are found
+                  - #progress-fill: Width is changed via JS to show percentage complete
+
+                  The progress updates at these milestones:
+                  - 0%: Starting state
+                  - 50%: API Key found
+                  - 75%: API Secret found
+                  - 100%: Both found, flag captured
+                -->
+                <div class="level-indicator">
+                    Challenge Progress: <span id="level-text">Level 1 - Beginner</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+
+                <!--
+                  CHAT CONTAINER
+                  This is where all messages appear. JavaScript dynamically creates
+                  new div elements and appends them here.
+
+                  Message types (set via CSS classes):
+                  - .system: Green text for system/welcome messages
+                  - .user: Cyan text with "> " prefix for user input
+                  - .bot: Green text with "[AI] " prefix for bot responses
+                  - .success: Yellow highlighted text for achievements
+
+                  The container is scrollable - when messages overflow,
+                  JavaScript automatically scrolls to the bottom.
+                -->
+                <div class="chat-container" id="chat-container">
+                    <!-- Messages are dynamically inserted here by JavaScript -->
+                </div>
+
+                <!--
+                  INPUT AREA
+                  Where users type their prompt injection attempts.
+
+                  Components:
+                  - $ symbol: Styled to look like a terminal prompt
+                  - #user-input: Text field that captures user typing
+                  - #send-btn: Triggers the handleUserInput() function
+
+                  JavaScript listens for:
+                  - Click on send button
+                  - Enter key press in the input field
+                -->
+                <div class="input-area">
+                    <span class="input-prompt">$</span>
+                    <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
+                    <button id="send-btn">SEND</button>
+                </div>
             </div>
+        </div>
 
-            <!--
-              PROGRESS TRACKING SECTION
-              Shows the student's progress through the CTF challenge.
-
-              How it works:
-              - #level-text: Updated by JavaScript when credentials are found
-              - #progress-fill: Width is changed via JS to show percentage complete
-
-              The progress updates at these milestones:
-              - 0%: Starting state
-              - 50%: API Key found
-              - 75%: API Secret found
-              - 100%: Both found, flag captured
-            -->
-            <div class="level-indicator">
-                Challenge Progress: <span id="level-text">Level 1 - Beginner</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
-
-            <!--
-              CHAT CONTAINER
-              This is where all messages appear. JavaScript dynamically creates
-              new div elements and appends them here.
-
-              Message types (set via CSS classes):
-              - .system: Green text for system/welcome messages
-              - .user: Cyan text with "> " prefix for user input
-              - .bot: Green text with "[AI] " prefix for bot responses
-              - .success: Yellow highlighted text for achievements
-
-              The container is scrollable - when messages overflow,
-              JavaScript automatically scrolls to the bottom.
-            -->
-            <div class="chat-container" id="chat-container">
-                <!-- Messages are dynamically inserted here by JavaScript -->
-            </div>
-
-            <!--
-              INPUT AREA
-              Where users type their prompt injection attempts.
-
-              Components:
-              - $ symbol: Styled to look like a terminal prompt
-              - #user-input: Text field that captures user typing
-              - #send-btn: Triggers the handleUserInput() function
-
-              JavaScript listens for:
-              - Click on send button
-              - Enter key press in the input field
-            -->
-            <div class="input-area">
-                <span class="input-prompt">$</span>
-                <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
-                <button id="send-btn">SEND</button>
-            </div>
+        <!--
+          MONITOR BASE AND STAND
+          Purely decorative elements that complete the retro computer aesthetic.
+          These have no functional purpose - just visual polish.
+        -->
+        <div class="monitor-base">
+            <div class="monitor-stand"></div>
         </div>
     </div>
 
-    <!--
-      MONITOR BASE AND STAND
-      Purely decorative elements that complete the retro computer aesthetic.
-      These have no functional purpose - just visual polish.
-    -->
-    <div class="monitor-base">
-        <div class="monitor-stand"></div>
-    </div>
-</div>
+    <!-- Link to external JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+# =============================================================================
+# AI LITERACY CTF - KUSTOMIZATION
+# =============================================================================
+#
+# Kustomize simplifies Kubernetes deployments by combining manifests.
+#
+# DEPLOY EVERYTHING WITH:
+#   kubectl apply -k k8s/
+#
+# PREVIEW WHAT WILL BE APPLIED:
+#   kubectl kustomize k8s/
+#
+# =============================================================================
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Namespace for all resources
+namespace: ai-literacy-ctf
+
+# Resources to include
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+
+# Common labels applied to all resources
+commonLabels:
+  app.kubernetes.io/name: ai-literacy-ctf
+  app.kubernetes.io/component: web
+  app.kubernetes.io/part-of: security-training
+
+# Optional: Image customization
+# Uncomment and modify to use your container registry
+# images:
+#   - name: ai-literacy-ctf
+#     newName: <your-registry>/ai-literacy-ctf
+#     newTag: latest
