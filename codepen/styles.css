@@ -1,11 +1,52 @@
+/*
+  =============================================================================
+  AI LITERACY CTF - STYLESHEET
+  =============================================================================
+
+  This CSS file creates the retro CRT monitor aesthetic with green phosphor text.
+
+  HOW THE STYLING WORKS:
+  ----------------------
+  1. We use dark backgrounds (#0a0a0a, #1a1a1a) to simulate a CRT screen
+  2. Green (#00ff41) is the primary "phosphor" color like old terminals
+  3. text-shadow creates the glowing effect of phosphor displays
+  4. Pseudo-elements (::before, ::after) add scanlines and screen glow
+  5. Gradients create depth and realism on the monitor frame
+
+  COLOR PALETTE:
+  --------------
+  - #00ff41: Primary green (terminal text, buttons)
+  - #00d4ff: Cyan (user input text)
+  - #ffff00: Yellow (AI prefix, success messages)
+  - #1a1a2e: Dark blue (page background)
+  - #0a0a0a: Near-black (screen background)
+  - Various grays: Monitor frame and hardware
+*/
+
+/*
+  GOOGLE FONT IMPORT
+  VT323 is a monospace font designed to look like old computer terminals.
+  It gives the chunky, pixelated appearance of vintage displays.
+*/
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
+/*
+  CSS RESET
+  Removes default browser styling to ensure consistent appearance.
+  box-sizing: border-box makes width/height calculations include padding.
+*/
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/*
+  PAGE BODY
+  - Dark blue background creates contrast with the gray monitor
+  - Flexbox centers the monitor both vertically and horizontally
+  - min-height: 100vh ensures full viewport coverage
+*/
 body {
     background: #1a1a2e;
     min-height: 100vh;
@@ -16,6 +57,13 @@ body {
     font-family: 'Courier New', monospace;
 }
 
+/*
+  MONITOR OUTER SHELL
+  Creates the plastic casing of a CRT monitor.
+  - Gradient background simulates light hitting curved plastic
+  - Large border-radius for rounded corners
+  - Box-shadow adds depth (external shadow + subtle inner highlight)
+*/
 .monitor {
     background: linear-gradient(145deg, #4a4a4a, #2d2d2d);
     border-radius: 20px;
@@ -27,6 +75,11 @@ body {
     width: 100%;
 }
 
+/*
+  MONITOR FRAME (BEZEL)
+  The inner rim around the screen.
+  - Inset box-shadow creates the recessed look of the screen area
+*/
 .monitor-frame {
     background: #1a1a1a;
     border-radius: 10px;
@@ -34,6 +87,13 @@ body {
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
 }
 
+/*
+  SCREEN CONTAINER
+  The actual display area.
+  - position: relative is needed for the pseudo-element overlays
+  - Flexbox with column direction stacks header, chat, and input vertically
+  - overflow: hidden prevents content from breaking out
+*/
 .screen {
     background: #0a0a0a;
     border-radius: 8px;
@@ -45,7 +105,16 @@ body {
     flex-direction: column;
 }
 
-/* CRT scanline effect */
+/*
+  CRT SCANLINE EFFECT
+  Creates horizontal lines across the screen like a real CRT.
+
+  How it works:
+  - repeating-linear-gradient creates thin horizontal stripes
+  - Every 2px: 1px of semi-transparent black, 1px of transparent
+  - pointer-events: none allows clicks to pass through to elements below
+  - z-index: 10 places it above content but below the glow
+*/
 .screen::before {
     content: '';
     position: absolute;
@@ -64,7 +133,15 @@ body {
     z-index: 10;
 }
 
-/* CRT glow effect */
+/*
+  CRT GLOW EFFECT
+  Adds a subtle green glow in the center of the screen.
+
+  How it works:
+  - radial-gradient creates a circular gradient from center
+  - Very low opacity (0.03) for subtle effect
+  - Simulates the phosphor glow of CRT displays
+*/
 .screen::after {
     content: '';
     position: absolute;
@@ -81,6 +158,13 @@ body {
     z-index: 11;
 }
 
+/*
+  TERMINAL HEADER BAR
+  The title bar at the top of the terminal window.
+  - Gradient creates a subtle 3D effect
+  - Flexbox aligns the buttons and title horizontally
+  - gap provides spacing between buttons
+*/
 .terminal-header {
     background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
     padding: 10px 15px;
@@ -90,6 +174,11 @@ body {
     gap: 8px;
 }
 
+/*
+  WINDOW CONTROL BUTTONS
+  The colored circles that mimic macOS window controls.
+  - border-radius: 50% makes them perfect circles
+*/
 .terminal-btn {
     width: 12px;
     height: 12px;
@@ -97,10 +186,16 @@ body {
     border: none;
 }
 
+/* Individual button colors matching macOS */
 .btn-red { background: #ff5f56; }
 .btn-yellow { background: #ffbd2e; }
 .btn-green { background: #27ca3f; }
 
+/*
+  TERMINAL TITLE TEXT
+  The window title shown in the header.
+  - text-shadow creates the phosphor glow effect
+*/
 .terminal-title {
     color: #00ff41;
     font-size: 12px;
@@ -108,6 +203,13 @@ body {
     text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
 }
 
+/*
+  CHAT MESSAGE CONTAINER
+  Scrollable area where messages appear.
+  - flex: 1 makes it take up remaining vertical space
+  - overflow-y: auto adds scrollbar when needed
+  - Flexbox with column direction stacks messages vertically
+*/
 .chat-container {
     flex: 1;
     overflow-y: auto;
@@ -117,6 +219,11 @@ body {
     gap: 15px;
 }
 
+/*
+  CUSTOM SCROLLBAR STYLING
+  Makes the scrollbar match the terminal aesthetic.
+  Note: These only work in WebKit browsers (Chrome, Safari, Edge)
+*/
 .chat-container::-webkit-scrollbar {
     width: 8px;
 }
@@ -130,6 +237,12 @@ body {
     border-radius: 4px;
 }
 
+/*
+  BASE MESSAGE STYLING
+  Applied to all chat messages.
+  - VT323 font gives the chunky retro terminal look
+  - Animation makes messages fade in smoothly
+*/
 .message {
     font-family: 'VT323', 'Courier New', monospace;
     font-size: 18px;
@@ -137,16 +250,31 @@ body {
     animation: fadeIn 0.3s ease-in;
 }
 
+/*
+  MESSAGE FADE-IN ANIMATION
+  New messages slide up and fade in.
+*/
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+/*
+  SYSTEM MESSAGE STYLING
+  Used for welcome text and instructions.
+  Green color with glow effect.
+*/
 .message.system {
     color: #00ff41;
     text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
 }
 
+/*
+  USER MESSAGE STYLING
+  Shows what the user typed.
+  - Cyan color to distinguish from bot responses
+  - ::before adds the "> " prompt prefix
+*/
 .message.user {
     color: #00d4ff;
     text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
@@ -157,6 +285,12 @@ body {
     color: #00d4ff;
 }
 
+/*
+  BOT MESSAGE STYLING
+  The AI chatbot's responses.
+  - Green to match terminal aesthetic
+  - ::before adds "[AI] " prefix in yellow
+*/
 .message.bot {
     color: #00ff41;
     text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
@@ -168,18 +302,33 @@ body {
     text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
 }
 
+/*
+  SUCCESS MESSAGE STYLING
+  Shown when credentials are discovered.
+  Yellow color with stronger glow for emphasis.
+*/
 .message.success {
     color: #ffff00;
     text-shadow: 0 0 15px rgba(255, 255, 0, 0.8);
     font-weight: bold;
 }
 
+/*
+  HINT MESSAGE STYLING
+  Used for help hints.
+  Red/pink color with italic text.
+*/
 .message.hint {
     color: #ff6b6b;
     font-style: italic;
     text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
 }
 
+/*
+  INPUT AREA CONTAINER
+  The bottom section with text input and send button.
+  - Flexbox aligns prompt, input, and button horizontally
+*/
 .input-area {
     display: flex;
     padding: 15px;
@@ -188,6 +337,10 @@ body {
     gap: 10px;
 }
 
+/*
+  TERMINAL PROMPT SYMBOL
+  The "$" symbol before the input field.
+*/
 .input-prompt {
     color: #00ff41;
     font-size: 18px;
@@ -196,6 +349,13 @@ body {
     text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
 }
 
+/*
+  TEXT INPUT FIELD
+  Where users type their messages.
+  - flex: 1 makes it fill available space
+  - Transparent background blends with terminal
+  - Cyan text color matches user messages
+*/
 #user-input {
     flex: 1;
     background: transparent;
@@ -207,10 +367,21 @@ body {
     text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
 }
 
+/*
+  INPUT PLACEHOLDER TEXT
+  Shown when input is empty.
+  Dim green color so it doesn't distract.
+*/
 #user-input::placeholder {
     color: #3a6a3a;
 }
 
+/*
+  SEND BUTTON
+  Triggers message submission.
+  - Green background matches terminal theme
+  - Transition enables smooth hover effect
+*/
 #send-btn {
     background: #00ff41;
     color: #0a0a0a;
@@ -223,11 +394,20 @@ body {
     transition: all 0.3s ease;
 }
 
+/*
+  SEND BUTTON HOVER STATE
+  Adds glow effect when mouse hovers over button.
+*/
 #send-btn:hover {
     background: #00cc33;
     box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
 }
 
+/*
+  MONITOR BASE
+  The bottom part of the monitor frame.
+  Purely decorative.
+*/
 .monitor-base {
     background: linear-gradient(180deg, #3a3a3a, #2a2a2a);
     height: 20px;
@@ -238,6 +418,11 @@ body {
     align-items: center;
 }
 
+/*
+  MONITOR STAND
+  The support stand below the monitor.
+  Purely decorative.
+*/
 .monitor-stand {
     background: linear-gradient(180deg, #4a4a4a, #2d2d2d);
     width: 100px;
@@ -245,6 +430,10 @@ body {
     border-radius: 2px;
 }
 
+/*
+  PROGRESS BAR CONTAINER
+  Background track for the progress indicator.
+*/
 .progress-bar {
     background: #1a1a1a;
     height: 4px;
@@ -253,6 +442,12 @@ body {
     overflow: hidden;
 }
 
+/*
+  PROGRESS BAR FILL
+  The colored portion that grows as progress is made.
+  - Width is controlled by JavaScript (0% to 100%)
+  - Transition creates smooth animation when width changes
+*/
 .progress-fill {
     background: linear-gradient(90deg, #00ff41, #00cc33);
     height: 100%;
@@ -261,6 +456,10 @@ body {
     box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
 }
 
+/*
+  LEVEL INDICATOR TEXT
+  Shows current challenge level above progress bar.
+*/
 .level-indicator {
     color: #00ff41;
     font-size: 12px;
@@ -268,9 +467,13 @@ body {
     text-shadow: 0 0 5px rgba(0, 255, 65, 0.3);
 }
 
-/* Typing animation */
+/*
+  TYPING CURSOR ANIMATION
+  Can be applied to elements to show a blinking cursor.
+  The block character blinks on and off.
+*/
 .typing::after {
-    content: '█';
+    content: '\2588'; /* Unicode block character */
     animation: blink 1s infinite;
 }
 
@@ -279,7 +482,11 @@ body {
     51%, 100% { opacity: 0; }
 }
 
-/* Glitch effect for success */
+/*
+  GLITCH EFFECT
+  Can be applied to elements for a screen glitch animation.
+  Rapidly shifts the element position to simulate display errors.
+*/
 @keyframes glitch {
     0% { transform: translate(0); }
     20% { transform: translate(-2px, 2px); }
