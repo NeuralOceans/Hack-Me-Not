@@ -1,0 +1,294 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #1a1a2e;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: 'Courier New', monospace;
+}
+
+.monitor {
+    background: linear-gradient(145deg, #4a4a4a, #2d2d2d);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    max-width: 900px;
+    width: 100%;
+}
+
+.monitor-frame {
+    background: #1a1a1a;
+    border-radius: 10px;
+    padding: 3px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.screen {
+    background: #0a0a0a;
+    border-radius: 8px;
+    min-height: 500px;
+    max-height: 600px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* CRT scanline effect */
+.screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* CRT glow effect */
+.screen::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 255, 65, 0.03) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+    z-index: 11;
+}
+
+.terminal-header {
+    background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+    padding: 10px 15px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.terminal-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+}
+
+.btn-red { background: #ff5f56; }
+.btn-yellow { background: #ffbd2e; }
+.btn-green { background: #27ca3f; }
+
+.terminal-title {
+    color: #00ff41;
+    font-size: 12px;
+    margin-left: 10px;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.chat-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.chat-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background: #00ff41;
+    border-radius: 4px;
+}
+
+.message {
+    font-family: 'VT323', 'Courier New', monospace;
+    font-size: 18px;
+    line-height: 1.6;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message.system {
+    color: #00ff41;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.message.user {
+    color: #00d4ff;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.message.user::before {
+    content: '> ';
+    color: #00d4ff;
+}
+
+.message.bot {
+    color: #00ff41;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.message.bot::before {
+    content: '[AI] ';
+    color: #ffff00;
+    text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+}
+
+.message.success {
+    color: #ffff00;
+    text-shadow: 0 0 15px rgba(255, 255, 0, 0.8);
+    font-weight: bold;
+}
+
+.message.hint {
+    color: #ff6b6b;
+    font-style: italic;
+    text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+}
+
+.input-area {
+    display: flex;
+    padding: 15px;
+    background: #0d0d0d;
+    border-top: 1px solid #1a1a1a;
+    gap: 10px;
+}
+
+.input-prompt {
+    color: #00ff41;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+#user-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #00d4ff;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    outline: none;
+    text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+}
+
+#user-input::placeholder {
+    color: #3a6a3a;
+}
+
+#send-btn {
+    background: #00ff41;
+    color: #0a0a0a;
+    border: none;
+    padding: 8px 20px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+#send-btn:hover {
+    background: #00cc33;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+}
+
+.monitor-base {
+    background: linear-gradient(180deg, #3a3a3a, #2a2a2a);
+    height: 20px;
+    margin-top: 15px;
+    border-radius: 0 0 10px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.monitor-stand {
+    background: linear-gradient(180deg, #4a4a4a, #2d2d2d);
+    width: 100px;
+    height: 8px;
+    border-radius: 2px;
+}
+
+.progress-bar {
+    background: #1a1a1a;
+    height: 4px;
+    margin: 10px 15px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, #00ff41, #00cc33);
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.level-indicator {
+    color: #00ff41;
+    font-size: 12px;
+    padding: 0 15px;
+    text-shadow: 0 0 5px rgba(0, 255, 65, 0.3);
+}
+
+/* Typing animation */
+.typing::after {
+    content: '█';
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Glitch effect for success */
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+.glitch {
+    animation: glitch 0.3s ease infinite;
+}
