@@ -12,7 +12,16 @@
 #   docker run -p 8080:80 ai-literacy-ctf
 #   Then open http://localhost:8080
 #
-# PUSH TO AWS ECR:
+# BUILD FOR ARM (Oracle Cloud Free Tier):
+#   docker buildx build --platform linux/arm64 -t ai-literacy-ctf .
+#
+# PUSH TO ORACLE CLOUD CONTAINER REGISTRY (OCIR):
+#   docker login <region>.ocir.io -u '<tenancy>/<username>'
+#   docker tag ai-literacy-ctf:latest <region>.ocir.io/<tenancy>/ai-literacy-ctf:latest
+#   docker push <region>.ocir.io/<tenancy>/ai-literacy-ctf:latest
+#
+# PUSH TO AWS ECR (if using AWS instead):
+#   docker build -t ai-literacy-ctf .
 #   aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <account>.dkr.ecr.<region>.amazonaws.com
 #   docker tag ai-literacy-ctf:latest <account>.dkr.ecr.<region>.amazonaws.com/ai-literacy-ctf:latest
 #   docker push <account>.dkr.ecr.<region>.amazonaws.com/ai-literacy-ctf:latest

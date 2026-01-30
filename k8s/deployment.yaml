@@ -52,6 +52,7 @@ spec:
       containers:
         - name: ai-literacy-ctf
           # Image reference - update with your registry
+          # For Oracle Cloud (OCIR): <region>.ocir.io/<tenancy>/ai-literacy-ctf:latest
           # For AWS ECR: <account-id>.dkr.ecr.<region>.amazonaws.com/ai-literacy-ctf:latest
           image: ai-literacy-ctf:latest
           imagePullPolicy: Always

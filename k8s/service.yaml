@@ -7,7 +7,7 @@
 # SERVICE TYPES:
 # - ClusterIP (default): Internal access only, use with Ingress
 # - NodePort: Exposes on each node's IP at a static port
-# - LoadBalancer: Creates external load balancer (AWS ELB/ALB)
+# - LoadBalancer: Creates external load balancer (Oracle Cloud LB / AWS ELB)
 #
 # APPLY WITH:
 #   kubectl apply -f service.yaml
@@ -21,8 +21,9 @@ metadata:
   labels:
     app: ai-literacy-ctf
 spec:
-  # Use LoadBalancer for direct external access on AWS
-  # This will create an AWS ELB/NLB automatically
+  # Use LoadBalancer for direct external access
+  # Oracle Cloud: Creates OCI Load Balancer (free tier includes one)
+  # AWS: Creates ELB/NLB automatically
   type: LoadBalancer
 
   # Alternative: Use ClusterIP with Ingress for more control
